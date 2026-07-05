@@ -3,305 +3,455 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prawdziwy Portfel — PLN</title>
+<title>Profesjonalna Rezerwacja Taxi Polska</title>
 
 <style>
-:root{
-  --bg:linear-gradient(180deg,#0f2027 0%,#203a43 45%,#2c5364 100%);
-  --primary:#00c9a7;
-  --panel:#1e2a38;
-  --muted:#9fb3c8;
-  --radius:16px;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif
 }
-*{box-sizing:border-box}
+
 body{
-  margin:0;
-  font-family:Inter,system-ui,Arial;
-  background:var(--bg);
-  min-height:100vh;
-  color:#e6f0ff;
-}
-.hidden{display:none}
-
-.header{
-  padding:14px 16px;
-  background:rgba(0,0,0,.5);
-  backdrop-filter:blur(10px);
-  color:#fff;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.header span{font-weight:700}
-
-.app{
-  max-width:900px;
-  margin:0 auto;
-  padding:14px;
-  padding-bottom:90px;
-}
-.card{
-  background:linear-gradient(160deg,#00c9a7,#005f73);
-  color:#fff;
-  padding:20px;
-  border-radius:var(--radius);
-}
-.balance{font-size:2rem;font-weight:800;margin-top:6px}
-
-.actions{
-  display:flex;
-  gap:12px;
-  margin:16px 0;
-}
-.action{
-  flex:1;
-  background:linear-gradient(160deg,#00c9a7,#005f73);
-  color:#fff;
-  text-align:center;
-  padding:14px;
-  border-radius:14px;
-  font-weight:700;
-  cursor:pointer;
+background:#f4f4f4
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-.panel{
-  background:rgba(30,42,56,.95);
-  border-radius:14px;
-  padding:14px;
-}
-.tx{
-  background:rgba(0,201,167,.1);
-  padding:10px;
-  border-radius:10px;
-  margin-bottom:8px;
-  display:flex;
-  justify-content:space-between;
-}
-.muted{color:var(--muted);font-size:.85rem;margin-top:10px}
-
-.frozen-note{
-  margin-top:16px;
-  padding:14px;
-  border-radius:12px;
-  background:rgba(255,80,80,.15);
-  color:#ff6b6b;
-  font-weight:600;
-  text-align:center;
+.container{
+width:95%;
+max-width:900px;
+margin:20px auto;
+background:#fff;
+padding:20px;
+border-radius:12px;
+box-shadow:0 0 10px rgba(0,0,0,.1)
 }
 
-.nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:rgba(0,0,0,.7);
-  backdrop-filter:blur(12px);
-  display:flex;
-  justify-content:space-around;
-  padding:10px 0;
-}
-.nav-item{
-  color:#9fb3c8;
-  text-align:center;
-  font-size:.75rem;
-  cursor:pointer;
-}
-.nav-item.active{color:#00c9a7}
-.nav-item div{font-size:20px}
-
-.modal-back{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.6);
-  display:none;
-  align-items:center;
-  justify-content:center;
-}
-.modal{
-  background:#1e2a38;
-  padding:20px;
-  border-radius:16px;
-  width:320px;
-  text-align:center;
-  color:#e6f0ff;
+input,
+button,
+textarea{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:1px solid #ccc;
+border-radius:6px
 }
 
-.toast{
-  position:fixed;
-  bottom:100px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#000;
-  color:#00c9a7;
-  padding:10px 16px;
-  border-radius:10px;
-  display:none;
+button{
+background:#ffc107;
+border:none;
+font-weight:bold;
+cursor:pointer
+}
+
+button:hover{
+background:#ffb300
+}
+
+.hidden{
+display:none
+}
+
+.logout{
+background:red;
+color:#fff
+}
+
+.taxi-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:15px;
+margin-top:15px
+}
+
+.taxi-card{
+border:1px solid #ddd;
+border-radius:10px;
+padding:10px;
+background:#fafafa
+}
+
+.taxi-card img{
+width:100%;
+height:180px;
+object-fit:cover;
+border-radius:8px
+}
+
+.booking-card{
+background:#fafafa;
+padding:10px;
+margin-top:10px;
+border-left:4px solid #ffc107
+}
+
+.selected{
+outline:3px solid #ffc107
+}
+
+.whatsapp{
+margin-top:8px;
+padding:8px;
+background:#e8f5e9;
+border-radius:6px;
+font-size:14px;
+font-weight:bold;
+color:#1b5e20;
+line-height:1.5
 }
 </style>
-</head>
 
+</head>
 <body>
 
-<div class="header">
-  <span id="pageTitle">Strona główna</span>
-  <button onclick="logout()" style="background:#0005;color:#fff;border:none;padding:6px 10px;border-radius:8px">Wyloguj się</button>
+<div class="container" id="authSection">
+
+<h1>Profesjonalna Rezerwacja Taxi Polska</h1>
+
+<h2>Rejestracja</h2>
+
+<input
+id="signupName"
+placeholder="Imię i nazwisko">
+
+<input
+id="signupEmail"
+type="email"
+placeholder="Adres e-mail">
+
+<input
+id="signupPassword"
+type="password"
+placeholder="Hasło">
+
+<button onclick="signup()">
+Utwórz konto
+</button>
+
+<hr><br>
+
+<h2>Logowanie</h2>
+
+<input
+id="loginEmail"
+type="email"
+placeholder="Adres e-mail">
+
+<input
+id="loginPassword"
+type="password"
+placeholder="Hasło">
+
+<button onclick="login()">
+Zaloguj się
+</button>
+
 </div>
 
-<div class="app" id="home">
-  <div class="card">
-    <div>Saldo portfela</div>
-    <div class="balance" id="balance">1 500 000,00 €</div>
-  </div>
+<div class="container hidden" id="dashboard">
 
-  <div class="actions">
-    <div class="action" onclick="showFrozenModal()">Przelew</div>
-    <div class="action" onclick="showFrozenModal()">Wypłata</div>
-    <div class="action" onclick="showFrozenModal()">Opłać rachunki</div>
-  </div>
+<h1>Zamów Taxi</h1>
 
-  <div class="grid">
-    <div class="panel">
-      <strong>Historia transakcji</strong>
-      <div id="txList"></div>
-    </div>
-    <div class="panel">
-      <strong>Informacje o koncie</strong>
-      <p class="muted">Poziom 4 • Zweryfikowane</p>
-      <p class="muted">Nie udostępniaj swoich danych</p>
-    </div>
-  </div>
+<p id="welcome"></p>
+
+<input
+id="pickup"
+placeholder="Miejsce odbioru">
+
+<input
+id="destination"
+placeholder="Miejsce docelowe">
+
+<input
+id="distance"
+type="number"
+placeholder="Odległość (KM)">
+
+<button onclick="estimateFare()">
+Oblicz cenę przejazdu
+</button>
+
+<h3 id="fare"></h3>
+
+<h2>Wybierz Taxi</h2>
+
+<div class="taxi-grid">
+
+<div class="taxi-card" id="taxi1">
+
+<img src="https://images.unsplash.com/photo-1511919884226-fd3cad34887c?auto=format&fit=crop&w=800&q=80">
+
+<h3>Taxi Miejskie</h3>
+
+<p>⭐⭐⭐⭐⭐ 4.9</p>
+
+<p>Kierowca: Piotr Kowalski</p>
+
+<p>Polubienia:
+<span id="l1">12</span>
+</p>
+
+<button onclick="likeTaxi('l1')">
+👍 Lubię to
+</button>
+
+<p>Czyste i nowoczesne wnętrze samochodu.</p>
+
+<div class="whatsapp">
+WhatsApp: +48 731 713 821<br>
+WhatsApp – zamówienia firmowe (bez połączeń)
 </div>
 
-<div class="app hidden" id="finance">
-  <div class="panel">
-    <h3>Finanse</h3>
-    <p class="muted">Analiza wydatków i przychodów</p>
-    <p><strong>Miesięczne wydatki:</strong> 615 000 €</p>
-    <p><strong>Oszczędności:</strong> 2 300 000 €</p>
-  </div>
+<button onclick="selectTaxi('Taxi Miejskie','taxi1')">
+Wybierz Taxi
+</button>
+
+</div>
+<div class="taxi-card" id="taxi2">
+
+<img src="https://images.unsplash.com/photo-1489824904134-892ab64532f1?auto=format&fit=crop&w=800&q=80">
+
+<h3>Taxi Rodzinne</h3>
+
+<p>⭐⭐⭐⭐⭐ 4.8</p>
+
+<p>Kierowca: Marek Nowak</p>
+
+<p>Polubienia:
+<span id="l2">8</span>
+</p>
+
+<button onclick="likeTaxi('l2')">
+👍 Lubię to
+</button>
+
+<p>Wygodne siedzenia dla całej rodziny.</p>
+
+<div class="whatsapp">
+WhatsApp: +48 731 713 821<br>
+WhatsApp – zamówienia firmowe (bez połączeń)
 </div>
 
-<div class="app hidden" id="rewards">
-  <div class="panel">
-    <h3>Nagrody</h3>
-    <p class="muted">Dostępne punkty</p>
-    <h2>12 450 pkt</h2>
-    <button onclick="showFrozenModal()" style="width:100%;padding:12px;border-radius:12px;border:none;background:var(--primary);color:#fff">
-      Wymień nagrody
-    </button>
-  </div>
+<button onclick="selectTaxi('Taxi Rodzinne','taxi2')">
+Wybierz Taxi
+</button>
+
 </div>
 
-<div class="app hidden" id="cards">
-  <div class="panel">
-    <h3>Karty</h3>
-    <div class="card">
-      <div>Karta wirtualna</div>
-      <div class="balance">**** 4921</div>
-      <p class="muted">Aktywna</p>
-    </div>
-  </div>
+<div class="taxi-card" id="taxi3">
+
+<img src="https://images.unsplash.com/photo-1503376780353-7e6692757b70?auto=format&fit=crop&w=800&q=80">
+
+<h3>Taxi Standard</h3>
+
+<p>⭐⭐⭐⭐ 4.3</p>
+
+<p>Kierowca: Tomasz Wiśniewski</p>
+
+<p>Polubienia:
+<span id="l3">5</span>
+</p>
+
+<button onclick="likeTaxi('l3')">
+👍 Lubię to
+</button>
+
+<p>Zadbane wnętrze na codzienne przejazdy.</p>
+
+<div class="whatsapp">
+WhatsApp: +48 731 713 821<br>
+WhatsApp – zamówienia firmowe (bez połączeń)
 </div>
 
-<div class="app hidden" id="me">
-  <div class="panel">
-    <h3>Mój profil</h3>
-    <p><strong>Status:</strong> Zweryfikowane</p>
-    <p><strong>Kraj:</strong> Polska</p>
-    <p><strong>Waluta:</strong> €</p>
-  </div>
+<button onclick="selectTaxi('Taxi Standard','taxi3')">
+Wybierz Taxi
+</button>
+
 </div>
 
-<div class="nav">
-  <div class="nav-item active" onclick="switchTab('home',this)"><div>🏠</div>Strona główna</div>
-  <div class="nav-item" onclick="switchTab('rewards',this)"><div>🎁</div>Nagrody</div>
-  <div class="nav-item" onclick="switchTab('finance',this)"><div>📈</div>Finanse</div>
-  <div class="nav-item" onclick="switchTab('cards',this)"><div>💳</div>Karty</div>
-  <div class="nav-item" onclick="switchTab('me',this)"><div>👤</div>Ja</div>
 </div>
 
-<div class="modal-back" id="modalBack">
-  <div class="modal" id="modal"></div>
-</div>
+<button onclick="bookTaxi()">
+Zamów Taxi
+</button>
 
-<div class="toast" id="toast"></div>
+<button class="logout" onclick="logout()">
+Wyloguj się
+</button>
+
+<h2>Historia Zamówień</h2>
+
+<div id="history"></div>
+
+</div>
 
 <script>
-let balanceValue = 1600000;
-let tx = [];
 
-const $ = id => document.getElementById(id);
-const fmt = n => n.toLocaleString('pl-PL');
+let currentUser=null;
+let selectedTaxi="";
 
-function showToast(t){
-  toast.textContent=t;
-  toast.style.display='block';
-  setTimeout(()=>toast.style.display='none',2000);
+function signup(){
+
+const name=signupName.value;
+const email=signupEmail.value;
+const password=signupPassword.value;
+
+if(!name||!email||!password){
+alert("Uzupełnij wszystkie pola");
+return;
 }
 
-function addFrozenNote(container){
-  if(container.querySelector('.frozen-note')) return;
-  const note=document.createElement('div');
-  note.className='frozen-note';
-  note.innerHTML='Aby odblokować to konto, wpłać kwotę 5000 EUR, aby odblokować to konto bankowe. Będziesz mógł wypłacać i dokonywać przelewów, a także korzystać z karty kredytowej, aby wypłacać pieniądze. ';
-  container.appendChild(note);
+let users=JSON.parse(localStorage.getItem("users"))||[];
+
+if(users.find(u=>u.email===email)){
+alert("Konto już istnieje");
+return;
 }
 
-function switchTab(id,el){
-  document.querySelectorAll('.app').forEach(a=>a.classList.add('hidden'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const app=$(id);
-  app.classList.remove('hidden');
-  el.classList.add('active');
-  pageTitle.textContent=el.innerText;
-  if(id!=='home') addFrozenNote(app);
+users.push({name,email,password});
+
+localStorage.setItem("users",JSON.stringify(users));
+
+alert("Konto zostało utworzone pomyślnie");
+
 }
 
-function showFrozenModal(){
-  modal.innerHTML=`
-    <h3>Konto zablokowane</h3>
-    <p class="muted">
-    To konto zostało zamrożone po śmierci<br>
-      <strong>Aby odblokować to konto, wpłać kwotę 5000 EUR, aby odblokować to konto bankowe. Będziesz mógł wypłacać i dokonywać przelewów, a także korzystać z karty kredytowej, aby wypłacać pieniądze. </strong>
-    </p>
-    <button onclick="modalBack.style.display='none'">Zamknij</button>
-  `;
-  modalBack.style.display='flex';
+function login(){
+
+let users=JSON.parse(localStorage.getItem("users"))||[];
+
+let user=users.find(u=>u.email===loginEmail.value&&u.password===loginPassword.value);
+
+if(!user){
+
+alert("Nieprawidłowy adres e-mail lub hasło");
+
+return;
+
+}
+
+currentUser=user;
+
+authSection.classList.add("hidden");
+
+dashboard.classList.remove("hidden");
+
+welcome.innerHTML="Witamy <b>"+user.name+"</b>";
+
+loadHistory();
+
+}
+
+function estimateFare(){
+
+let km=parseFloat(distance.value);
+
+if(!km){
+
+alert("Podaj odległość");
+
+return;
+
+}
+
+fare.innerHTML="Szacunkowa cena: "+((km*4)+10).toFixed(2)+" PLN";
+
+}
+function selectTaxi(name,id){
+
+selectedTaxi=name;
+
+document.querySelectorAll(".taxi-card").forEach(x=>x.classList.remove("selected"));
+
+document.getElementById(id).classList.add("selected");
+
+}
+
+function likeTaxi(id){
+
+let el=document.getElementById(id);
+
+el.textContent=parseInt(el.textContent)+1;
+
+}
+
+function bookTaxi(){
+
+if(!selectedTaxi){
+
+alert("Wybierz taxi");
+
+return;
+
+}
+
+if(!pickup.value||!destination.value||!distance.value){
+
+alert("Uzupełnij wszystkie pola");
+
+return;
+
+}
+
+let booking={
+
+taxi:selectedTaxi,
+
+pickup:pickup.value,
+
+destination:destination.value,
+
+distance:distance.value,
+
+date:new Date().toLocaleString("pl-PL")
+
+};
+
+let history=JSON.parse(localStorage.getItem(currentUser.email))||[];
+
+history.push(booking);
+
+localStorage.setItem(currentUser.email,JSON.stringify(history));
+
+alert("Taxi zostało pomyślnie zamówione!");
+
+loadHistory();
+
+}
+
+function loadHistory(){
+
+let history=JSON.parse(localStorage.getItem(currentUser.email))||[];
+
+let html="";
+
+history.forEach(item=>{
+
+html+=`
+<div class="booking-card">
+<b>Taxi:</b> ${item.taxi}<br>
+<b>Miejsce odbioru:</b> ${item.pickup}<br>
+<b>Miejsce docelowe:</b> ${item.destination}<br>
+<b>Odległość:</b> ${item.distance} KM<br>
+<b>Data:</b> ${item.date}
+</div>`;
+
+});
+
+document.getElementById("history").innerHTML=html;
+
 }
 
 function logout(){
-  showToast('Wylogowano');
+
+currentUser=null;
+
+dashboard.classList.add("hidden");
+
+authSection.classList.remove("hidden");
+
 }
 
-function render(){
-  balance.textContent = fmt(balanceValue)+' €';
-  txList.innerHTML='';
-  tx.forEach(t=>{
-    const d=document.createElement('div');
-    d.className='tx';
-    d.innerHTML=`
-      <div>
-        <strong>${t.type}</strong>
-        <div class="muted">${t.name}</div>
-      </div>
-      <div><strong>- ${fmt(t.amount)} €</strong></div>
-    `;
-    txList.appendChild(d);
-  });
-}
-
-(function(){
-  balance=document.getElementById('balance');
-  for(let i=1;i<=6;i++){
-    tx.push({type:'Przelew',name:'Klient '+i,amount:[5000,10000,100000][i%3]});
-  }
-  render();
-})();
 </script>
 
 </body>
